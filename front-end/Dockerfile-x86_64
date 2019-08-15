@@ -1,0 +1,32 @@
+FROM node as builder
+# If try to build quasar app using arm64v8 it fails
+#FROM arm64v8/node:10-alpine
+
+WORKDIR /usr/src
+COPY package*.json .
+RUN npm install
+
+COPY . .
+
+RUN npm install -g @quasar/cli
+
+# Build SPA app
+RUN quasar build -- -m spa -t mat
+
+#FROM arm64v8/node:10-slim
+
+#WORKDIR /app
+#COPY --from=builder /usr/src/dist/spa/* /app/
+
+#RUN npm install -g @quasar/cli
+
+#EXPOSE 8080
+
+#CMD [ "quasar", "serve", "-p", "8080" ]
+
+FROM nginx:stable-alpine
+
+EXPOSE 8080
+
+COPY --from=builder /usr/src/dist/spa/* /usr/share/nginx/html/
+COPY default.conf /etc/nginx/conf.d/default.conf
