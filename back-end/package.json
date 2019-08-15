@@ -1,0 +1,17 @@
+{
+  "name": "credentials-setup-back-end",
+  "version": "1.0.0",
+  "description": "Back end to web app to setup AWS credentials on a fresh TorizonCore image",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Leonardo Graboski Veiga",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "express-fileupload": "^1.1.5"
+  }
+}
