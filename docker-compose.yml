@@ -1,0 +1,22 @@
+version: '3.7'
+services:
+  front-end:
+    image: leograba/pasta-demo-credentials-setup-front:latest
+    depends_on:
+      - back-end
+    ports:
+    - "8080:80"
+    networks:
+      - configsetup
+  back-end:
+    image: leograba/pasta-demo-credentials-setup-back:latest
+    networks:
+      - configsetup
+    expose:
+      - "8000"
+    volumes:
+      - type: bind
+        source: /greengrass/config/config.done
+        target: /config.done
+networks:
+  configsetup:
