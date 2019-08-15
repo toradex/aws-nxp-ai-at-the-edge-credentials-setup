@@ -9,7 +9,7 @@ const fileUpload = require('express-fileupload');
 const fs = require('fs');
 
 // This files must be bind-mount from /greengrass
-const config_fname = "./config.json"
+const config_fname = "/config.json"
 const conf_file = require(config_fname);
 
 // I've been told to never hardcode pwd, but this is just a demo
