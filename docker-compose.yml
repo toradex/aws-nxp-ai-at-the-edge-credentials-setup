@@ -24,5 +24,8 @@ services:
       - type: bind
         source: /greengrass/config/config.done
         target: /config.done
+      - type: bind
+        source: /greengrass/config/config.json
+        target: /config.json
 networks:
   configsetup:
