@@ -11,9 +11,9 @@ const fs = require('fs');
 // This files must be bind-mount from /greengrass
 const config_fname = "/config.json"
 const conf_file = require(config_fname);
+const passwd_fname = "/config.passwd"
 
-// I've been told to never hardcode pwd, but this is just a demo
-const pwd_hash = "48d276aee5a23692e14fad275890a3b1baba8a3b620dee920d674f04cf54186a";
+const pwd_hash = fs.readFileSync(passwd_fname, 'UTF-8')
 
 app.use(fileUpload());
 app.use( bodyParser.json() );
