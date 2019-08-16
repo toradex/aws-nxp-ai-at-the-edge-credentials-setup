@@ -102,7 +102,13 @@ app.post('/cert-priv-key', cors(), (req, res) => {
 app.options('/disable', cors())
 app.post('/disable', cors(), (req, res) => {
     if (req.body.disable === true){
-        console.log("Disabling the update service forever");
+        fs.writeFile('/config.disable', 'disable', function (err) {
+            if (err) {
+                res.status(500).send(false)
+                return console.log(err);
+            }
+            console.log("Disabling the update service forever");
+        });
     }
     else {
         res.status(401).send(false);

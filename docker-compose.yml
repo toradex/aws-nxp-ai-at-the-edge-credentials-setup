@@ -36,5 +36,8 @@ services:
       - type: bind
         source: /greengrass/config/config.passwd
         target: /config.passwd
+      - type: bind
+        source: /greengrass/config/config.disable
+        target: /config.disable
 networks:
   configsetup:
