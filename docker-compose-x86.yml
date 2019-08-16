@@ -8,7 +8,11 @@ services:
     depends_on:
       - back-end
     ports:
-    - "8080:80"
+      - "8080:80"
+    expose:
+      - "8080"
+    links:
+      - back-end
     networks:
       - configsetup
   back-end:
@@ -19,6 +23,8 @@ services:
     networks:
       - configsetup
     ports:
+      - "8000:8000"
+    expose:
       - "8000"
     volumes:
       - type: bind
