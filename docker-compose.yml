@@ -33,5 +33,8 @@ services:
       - type: bind
         source: /greengrass/config/config.json
         target: /config.json
+      - type: bind
+        source: /greengrass/config/config.passwd
+        target: /config.passwd
 networks:
   configsetup:
