@@ -1,6 +1,9 @@
 version: '3.7'
 services:
   front-end:
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile-x86_64
     image: leograba/pasta-demo-credentials-setup-front:latest-x86
     depends_on:
       - back-end
@@ -13,6 +16,9 @@ services:
     networks:
       - configsetup
   back-end:
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile-x86_64
     image: leograba/pasta-demo-credentials-setup-back:latest-x86
     networks:
       - configsetup

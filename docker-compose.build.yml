@@ -1,7 +1,10 @@
 version: '3.7'
 services:
   front-end:
-    image: leograba/pasta-demo-credentials-setup-front:latest-x86
+    build:
+      context: ./front-end
+      dockerfile: Dockerfile
+    image: leograba/pasta-demo-credentials-setup-front:latest
     depends_on:
       - back-end
     ports:
@@ -13,7 +16,10 @@ services:
     networks:
       - configsetup
   back-end:
-    image: leograba/pasta-demo-credentials-setup-back:latest-x86
+    build:
+      context: ./back-end
+      dockerfile: Dockerfile
+    image: leograba/pasta-demo-credentials-setup-back:latest
     networks:
       - configsetup
     ports:
