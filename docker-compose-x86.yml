@@ -39,5 +39,8 @@ services:
       - type: bind
         source: /greengrass/config/config.disable
         target: /config.disable
+      - type: bind
+        source: /greengrass/certs/
+        target: /greengrass/certs/
 networks:
   configsetup:
