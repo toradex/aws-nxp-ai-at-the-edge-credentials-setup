@@ -5,36 +5,8 @@ services:
       context: ./front-end
       dockerfile: Dockerfile
     image: leograba/pasta-demo-credentials-setup-front:latest
-    depends_on:
-      - back-end
-    ports:
-      - "8080:80"
-    links:
-      - back-end
-    networks:
-      - configsetup
   back-end:
     build:
       context: ./back-end
       dockerfile: Dockerfile
     image: leograba/pasta-demo-credentials-setup-back:latest
-    networks:
-      - configsetup
-    volumes:
-      - type: bind
-        source: /greengrass/config/config.done
-        target: /config.done
-      - type: bind
-        source: /greengrass/config/config.json
-        target: /config.json
-      - type: bind
-        source: /greengrass/config/config.passwd
-        target: /config.passwd
-      - type: bind
-        source: /greengrass/config/config.disable
-        target: /config.disable
-      - type: bind
-        source: /greengrass/certs/
-        target: /greengrass/certs/
-networks:
-  configsetup:
