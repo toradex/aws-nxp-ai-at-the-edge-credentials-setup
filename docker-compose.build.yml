@@ -9,8 +9,6 @@ services:
       - back-end
     ports:
       - "8080:80"
-    expose:
-      - "8080"
     links:
       - back-end
     networks:
@@ -22,10 +20,6 @@ services:
     image: leograba/pasta-demo-credentials-setup-back:latest
     networks:
       - configsetup
-    ports:
-      - "8000:8000"
-    expose:
-      - "8000"
     volumes:
       - type: bind
         source: /greengrass/config/config.done
