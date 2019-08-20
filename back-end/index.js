@@ -13,7 +13,7 @@ const config_fname = "/config.json"
 const conf_file = require(config_fname);
 const passwd_fname = "/config.passwd"
 
-const pwd_hash = fs.readFileSync(passwd_fname, 'UTF-8')
+const pwd_hash = fs.readFileSync(passwd_fname, 'UTF-8').trim()
 
 app.use(fileUpload());
 app.use( bodyParser.json() );
@@ -38,6 +38,7 @@ app.post('/save', cors(), (req, res) => {
         });
     }
     else {
+        console.log("Error: wrong password")
         res.status(401).send(false)
     }
 })
@@ -111,6 +112,7 @@ app.post('/disable', cors(), (req, res) => {
         });
     }
     else {
+        console.log("Error: disable request not set to true: " + req.body.disable)
         res.status(401).send(false);
     }
 });
