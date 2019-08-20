@@ -43,7 +43,7 @@
           field-name="pem"
           with-credentials=true
           auto-upload
-          url="http://localhost:8000/cert-pem"
+          url="/cert-pem"
           label="Upload <hash>.cert.pem File"
         />
 
@@ -51,7 +51,7 @@
           field-name="privkey"
           with-credentials=true
           auto-upload
-          url="http://localhost:8000/cert-priv-key"
+          url="/cert-priv-key"
           label="Upload <hash>.private.key File"
         />
 
@@ -109,7 +109,7 @@ export default {
     saveConfigData () {
       this.submitting = true
 
-      this.$axios.post('http://localhost:8000/save', {
+      this.$axios.post('/save', {
         withCredentials: true,
         thingArn: this.thingArn,
         iotHost: this.iotHost,
@@ -130,7 +130,7 @@ export default {
     disableForever () {
       this.disabling = true
 
-      this.$axios.post('http://localhost:8000/disable', {
+      this.$axios.post('/disable', {
         withCredentials: true,
         disable: true
       })
