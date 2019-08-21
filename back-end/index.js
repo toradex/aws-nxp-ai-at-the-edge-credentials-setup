@@ -17,28 +17,22 @@ app.use( bodyParser.json() );
 
 app.options('*', cors());
 
-app.options('/save', cors())
-app.post('/save', cors(), (req, res) => {
-    if (req.body.password === pwd_hash){
-        conf_file.coreThing.thingArn = req.body.thingArn;
-        conf_file.coreThing.iotHost = req.body.iotHost + "-ats.iot." +
-                                        req.body.awsRegion + ".amazonaws.com";
-        conf_file.coreThing.ggHost = "greengrass-ats.iot." +
-                                        req.body.awsRegion + ".amazonaws.com";
+app.options('/conf-json', cors())
+app.post('/conf-json', cors(), (req, res) => {
+    if (Object.keys(req.files).length == 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
 
-        fs.writeFile(config_fname, JSON.stringify(conf_file, null, 2), function (err) {
-            if (err) {
-                res.status(500).send(false)
-                return console.log(err);
-            }
-            res.send(true)
-        });
-    }
-    else {
-        console.log("Error: wrong password")
-        res.status(401).send(false)
-    }
-})
+    let confjson = req.files.confjson;
+    
+    confjson.mv(config_fname, function(err) {
+        if (err){
+            console.log("Unable to copy file!");
+            return res.status(500).send(err);
+        }
+        res.send(true)
+    });
+});
 
 app.options('/cert-pem', cors())
 app.post('/cert-pem', cors(), (req, res) => {
@@ -47,25 +41,25 @@ app.post('/cert-pem', cors(), (req, res) => {
     }
   
     let pem = req.files.pem;
-    conf_file.coreThing.certPath = pem.name;
-    conf_file.crypto.principals.IoTCertificate.certificatePath = 
-                "file:///greengrass/certs/" + pem.name;
-
-    pem.mv('/greengrass/certs/' + pem.name, function(err) {
-        if (err){
-            console.log("Unable to copy file!");
-            return res.status(500).send(err);
-        }
-            
-
-        fs.writeFile(config_fname, JSON.stringify(conf_file, null, 2), function (err) {
-            if (err) {
-                res.status(500).send(false)
-                return console.log(err);
+        conf_file.coreThing.certPath = pem.name;
+        conf_file.crypto.principals.IoTCertificate.certificatePath = 
+                    "file:///greengrass/certs/" + pem.name;
+    
+        pem.mv('/greengrass/certs/' + pem.name, function(err) {
+            if (err){
+                console.log("Unable to copy file!");
+                return res.status(500).send(err);
             }
-            res.send(true)
+                
+    
+            fs.writeFile(config_fname, JSON.stringify(conf_file, null, 2), function (err) {
+                if (err) {
+                    res.status(500).send(false)
+                    return console.log(err);
+                }
+                res.send(true)
+            });
         });
-    });
 });
 
 app.options('/cert-priv-key', cors())
