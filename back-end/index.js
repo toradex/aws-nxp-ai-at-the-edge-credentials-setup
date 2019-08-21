@@ -9,11 +9,8 @@ const fileUpload = require('express-fileupload');
 const fs = require('fs');
 
 // This files must be bind-mount from /greengrass
-const config_fname = "/config.json"
+const config_fname = "/greengrass/config/config.json"
 const conf_file = require(config_fname);
-const passwd_fname = "/config.passwd"
-
-const pwd_hash = fs.readFileSync(passwd_fname, 'UTF-8').trim()
 
 app.use(fileUpload());
 app.use( bodyParser.json() );
