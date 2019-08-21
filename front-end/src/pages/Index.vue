@@ -7,37 +7,30 @@
 
       <div class="row "><div>
 
-        <form @submit.prevent="saveConfigData" class="q-pa-md">
+        <q-field label="Bundle File Upload">
+        </q-field>
 
-          <q-field label="Thing ARN">
-            <q-input v-model="thingArn" placeholder="[THING_ARN_HERE]"/>
-          </q-field>
-
-          <q-field label="iot Host">
-            <q-input v-model="iotHost" placeholder="[HOST_PREFIX_HERE]"/>
-          </q-field>
-
-          <q-field label="AWS Region">
-            <q-input v-model="awsRegion" placeholder="[AWS_REGION_HERE]"/>
-          </q-field>
-
-          <q-field label="Confirmation Password">
-            <q-input v-model="password" type="password" inverted placeholder="Password here"/>
-          </q-field>
-
-          <q-btn type="submit" :loading="submitting" icon="sync" color="primary" label="Update" class="full-width" >
-            <template v-slot:loading>
-              <q-spinner-facebook />
-            </template>
-          </q-btn>
-
-        </form>
+        <q-uploader
+          field-name="tar"
+          with-credentials=true
+          auto-upload
+          url="/bundle"
+          label="Upload <hash>.tar.gz  Bundle File"
+        />
 
       </div></div>
       <div class=" row "><div>
 
-        <q-field label="PEM Certificate Files Upload">
+        <q-field label="Single Files Upload">
         </q-field>
+
+        <q-uploader
+          field-name="confjson"
+          with-credentials=true
+          auto-upload
+          url="/conf-json"
+          label="Upload config.json File"
+        />
 
         <q-uploader
           field-name="pem"
@@ -97,36 +90,10 @@ export default {
   },
   data () {
     return {
-      thingArn: '',
-      iotHost: '',
-      awsRegion: '',
-      password: '',
-      submitting: false,
       disabling: false
     }
   },
   methods: {
-    saveConfigData () {
-      this.submitting = true
-
-      this.$axios.post('/save', {
-        withCredentials: true,
-        thingArn: this.thingArn,
-        iotHost: this.iotHost,
-        awsRegion: this.awsRegion,
-        password: this.$sha256(this.password),
-      })
-      .then(function (res) {
-        console.log(res);
-      })
-      .catch(function (err) {
-        console.log("Error on POST to /save" + err);
-      });
-
-      setTimeout(() => {
-        this.submitting = false
-      }, 3000)
-    },
     disableForever () {
       this.disabling = true
 
