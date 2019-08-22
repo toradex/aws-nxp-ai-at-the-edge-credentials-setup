@@ -8,5 +8,5 @@ services:
   back-end:
     build:
       context: ./back-end
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile-arm32v7
     image: leograba/pasta-demo-credentials-setup-back:latest-arm32v7
