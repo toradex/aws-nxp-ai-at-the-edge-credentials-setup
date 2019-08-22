@@ -122,7 +122,7 @@ app.post('/cert-priv-key', cors(), (req, res) => {
 app.options('/disable', cors())
 app.post('/disable', cors(), (req, res) => {
     if (req.body.disable === true){
-        fs.writeFile('/config.disable', 'disable', function (err) {
+        fs.writeFile('/greengrass/config/config.disable', 'disable', function (err) {
             if (err) {
                 res.status(500).send(false)
                 return console.log(err);
