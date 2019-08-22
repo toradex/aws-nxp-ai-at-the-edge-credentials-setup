@@ -14,7 +14,7 @@
           field-name="tar"
           with-credentials=true
           auto-upload
-          url="/bundle"
+          url="/bundle-tar"
           label="Upload <hash>.tar.gz  Bundle File"
         />
 

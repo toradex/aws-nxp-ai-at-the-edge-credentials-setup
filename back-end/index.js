@@ -17,6 +17,23 @@ app.use( bodyParser.json() );
 
 app.options('*', cors());
 
+app.options('/bundle-tar', cors())
+app.post('/bundle-tar', cors(), (req, res) => {
+    if (Object.keys(req.files).length == 0) {
+        return res.status(400).send('No files were uploaded.');
+    }
+
+    let bundletar = req.files.tar;
+
+    bundletar.mv("/greengrass/config/" + bundletar.name, function(err) {
+        if (err){
+            console.log("Unable to copy file!");
+            return res.status(500).send(err);
+        }
+        res.send(true)
+    });
+});
+
 app.options('/conf-json', cors())
 app.post('/conf-json', cors(), (req, res) => {
     if (Object.keys(req.files).length == 0) {
@@ -24,7 +41,7 @@ app.post('/conf-json', cors(), (req, res) => {
     }
 
     let confjson = req.files.confjson;
-    
+
     confjson.mv(config_fname, function(err) {
         if (err){
             console.log("Unable to copy file!");
