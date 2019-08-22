@@ -24,7 +24,7 @@ RUN quasar build -- -m spa -t mat
 
 #CMD [ "quasar", "serve", "-p", "8080" ]
 
-FROM arm32v7/nginx:stable-alpine
+FROM arm32v7/nginx:stable
 
 EXPOSE 8080
 
