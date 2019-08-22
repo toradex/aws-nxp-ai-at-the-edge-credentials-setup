@@ -30,7 +30,17 @@ app.post('/bundle-tar', cors(), (req, res) => {
             console.log("Unable to copy file!");
             return res.status(500).send(err);
         }
-        require('child_process').exec('tar -C /greengrass/ -zxf /greengrass/config/' + bundletar.name, function(err) {});
+        require('child_process').exec('tar -C /greengrass/ -zxf /greengrass/config/' + bundletar.name, function(err) {
+            if (err){
+                console.log("Unable to copy file!");
+                return res.status(500).send(err);
+            }
+            require('child_process').exec('rm /greengrass/config/' + bundletar.name, function(err) {
+                if (err) {
+                    return res.status(500).send(err);
+                }
+            });
+        });
         res.send(true)
     });
 });
