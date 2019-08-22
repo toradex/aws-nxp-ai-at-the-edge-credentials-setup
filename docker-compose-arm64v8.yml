@@ -16,8 +16,17 @@ services:
       - configsetup
     volumes:
       - type: bind
-        source: /greengrass/config/
-        target: /greengrass/config/
+        source: /greengrass/config/config.done
+        target: /config.done
+      - type: bind
+        source: /greengrass/config/config.json
+        target: /config.json
+      - type: bind
+        source: /greengrass/config/config.passwd
+        target: /config.passwd
+      - type: bind
+        source: /greengrass/config/config.disable
+        target: /config.disable
       - type: bind
         source: /greengrass/certs/
         target: /greengrass/certs/
