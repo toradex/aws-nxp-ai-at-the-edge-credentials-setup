@@ -24,5 +24,6 @@ services:
       - type: bind
         source: /proc/device-tree/model
         target: /setup_descripion
+        read_only: true
 networks:
   configsetup:
