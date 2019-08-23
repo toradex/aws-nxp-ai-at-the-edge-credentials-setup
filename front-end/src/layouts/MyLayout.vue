@@ -33,7 +33,7 @@ export default {
   },
   created() {
     this.$axios
-      .post('/model', {})
+      .get('/model', {})
       .then(response => (this.model = response.data))
   }
 }
