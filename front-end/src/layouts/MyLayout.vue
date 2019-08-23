@@ -7,7 +7,9 @@
           Pasta Demo Credentials Configuration - Toradex Apalis iMX8 / Amazon AWS / NXP i.MX 8QuadMax
         </q-toolbar-title>
 
-        <div>Apalis iMX8 V1.0B</div>
+        <div>
+          {{ model }}
+        </div>
       </q-toolbar>
     </q-header>
 
@@ -25,11 +27,14 @@ export default {
   name: 'MyLayout',
   data () {
     return {
-      leftDrawerOpen: this.$q.platform.is.desktop
+      leftDrawerOpen: this.$q.platform.is.desktop,
+      model: ""
     }
   },
-  methods: {
-    openURL
+  created() {
+    this.$axios
+      .post('/model', {})
+      .then(response => (this.model = response.data))
   }
 }
 </script>

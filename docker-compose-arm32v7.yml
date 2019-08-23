@@ -21,5 +21,8 @@ services:
       - type: bind
         source: /greengrass/certs/
         target: /greengrass/certs/
+      - type: bind
+        source: /proc/device-tree/model
+        target: /setup_descripion
 networks:
   configsetup:

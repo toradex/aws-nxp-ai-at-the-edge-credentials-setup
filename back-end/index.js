@@ -136,4 +136,14 @@ app.post('/disable', cors(), (req, res) => {
     }
 });
 
+app.options('/model', cors())
+app.post('/model', cors(), (req, res) => {
+    fs.readFile('/setup_descripion', function read(err, data) {
+        if (err) {
+            return console.log(err);
+        }
+        res.send(data);
+    });
+});
+
 app.listen(port, () => console.log(`Back-end listening on ${port}!`))
