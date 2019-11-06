@@ -8,10 +8,6 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
 
-// This files must be bind-mount from /greengrass
-const config_fname = "/greengrass/config/config.json"
-const conf_file = require(config_fname);
-
 app.use(fileUpload());
 app.use( bodyParser.json() );
 
@@ -53,9 +49,9 @@ app.post('/conf-json', cors(), (req, res) => {
 
     let confjson = req.files.confjson;
 
-    confjson.mv(config_fname, function(err) {
+    confjson.mv("/greengrass/config/" + confjson.name, function(err) {
         if (err){
-            console.log("Unable to copy file!");
+            console.log("Unable to copy config file!");
             return res.status(500).send(err);
         }
         res.send(true)
@@ -69,25 +65,14 @@ app.post('/cert-pem', cors(), (req, res) => {
     }
   
     let pem = req.files.pem;
-        conf_file.coreThing.certPath = pem.name;
-        conf_file.crypto.principals.IoTCertificate.certificatePath = 
-                    "file:///greengrass/certs/" + pem.name;
-    
-        pem.mv('/greengrass/certs/' + pem.name, function(err) {
-            if (err){
-                console.log("Unable to copy file!");
-                return res.status(500).send(err);
-            }
-                
-    
-            fs.writeFile(config_fname, JSON.stringify(conf_file, null, 2), function (err) {
-                if (err) {
-                    res.status(500).send(false)
-                    return console.log(err);
-                }
-                res.send(true)
-            });
-        });
+
+    pem.mv('/greengrass/certs/' + pem.name, function(err) {
+        if (err){
+            console.log("Unable to copy PEM file!");
+            return res.status(500).send(err);
+        }
+        res.send(true)
+    });
 });
 
 app.options('/cert-priv-key', cors())
@@ -97,32 +82,20 @@ app.post('/cert-priv-key', cors(), (req, res) => {
     }
   
     let privkey = req.files.privkey;
-    conf_file.coreThing.keyPath = privkey.name;
-    conf_file.crypto.principals.IoTCertificate.privateKeyPath = 
-                "file:///greengrass/certs/" + privkey.name;
-    conf_file.crypto.principals.SecretsManager.privateKeyPath = 
-                "file:///greengrass/certs/" + privkey.name;
 
     privkey.mv('/greengrass/certs/' + privkey.name, function(err) {
         if (err){
-            console.log("Unable to copy file!");
+            console.log("Unable to copy CERT file!");
             return res.status(500).send(err);
         }
-
-        fs.writeFile(config_fname, JSON.stringify(conf_file, null, 2), function (err) {
-            if (err) {
-                res.status(500).send(false)
-                return console.log(err);
-            }
-            res.send(true)
-        });
+        res.send(true)
     });
 });
 
 app.options('/disable', cors())
 app.post('/disable', cors(), (req, res) => {
     if (req.body.disable === true){
-        fs.writeFile('/greengrass/config/config.disable', 'disable', function (err) {
+        fs.writeFile('/etc/greengrass/credentials-service.disable', 'disable', function (err) {
             if (err) {
                 res.status(500).send(false)
                 return console.log(err);

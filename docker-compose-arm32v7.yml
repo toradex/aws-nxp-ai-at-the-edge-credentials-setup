@@ -16,6 +16,9 @@ services:
       - configsetup
     volumes:
       - type: bind
+        source: /etc/greengrass/
+        target: /etc/greengrass/
+      - type: bind
         source: /greengrass/config/
         target: /greengrass/config/
       - type: bind
