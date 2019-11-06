@@ -5,7 +5,7 @@
 
     <div class="row q-pa-md q-gutter-md">
 
-      <div class="row "><div>
+      <div class="q-gutter-sm row "><div>
 
         <q-field label="Bundle File Upload">
         </q-field>
@@ -16,10 +16,10 @@
           auto-upload
           url="/bundle-tar"
           label="Upload <hash>.tar.gz  Bundle File"
-        />
+        ></q-uploader>
 
       </div></div>
-      <div class=" row "><div>
+      <div class="q-gutter-sm row"><div>
 
         <q-field label="Single Files Upload">
         </q-field>
@@ -30,7 +30,7 @@
           auto-upload
           url="/conf-json"
           label="Upload config.json File"
-        />
+        ></q-uploader>
 
         <q-uploader
           field-name="pem"
@@ -38,7 +38,7 @@
           auto-upload
           url="/cert-pem"
           label="Upload <hash>.cert.pem File"
-        />
+        ></q-uploader>
 
         <q-uploader
           field-name="privkey"
@@ -46,21 +46,24 @@
           auto-upload
           url="/cert-priv-key"
           label="Upload <hash>.private.key File"
-        />
+        ></q-uploader>
 
       </div></div>
 
-      <form @submit.prevent="disableForever" class="q-pa-md">
+      <div class="q-gutter-sm row"><div>
 
-        <div class=" row "><div>
-          <q-btn type="submit" :loading="disabling" icon="tv_off" color="primary" label="Disable this UI Forever" class="full-width" >
-            <template v-slot:loading>
-              <q-spinner-facebook />
-            </template>
-          </q-btn>
-        </div></div>
+        <q-field label="Tool Options">
+        </q-field>
 
-      </form>
+        <form @submit.prevent="disableForever" class="q-pa-md">
+            <q-btn type="submit" :loading="disabling" icon="tv_off" color="primary" label="Disable this UI Forever" class="full-width" >
+              <template v-slot:loading>
+                <q-spinner-facebook />
+              </template>
+            </q-btn>
+
+        </form>
+      </div></div>
 
     </div>
 
