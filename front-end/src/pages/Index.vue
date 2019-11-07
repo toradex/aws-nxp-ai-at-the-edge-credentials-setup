@@ -56,13 +56,23 @@
         </q-field>
 
         <form @submit.prevent="disableForever" class="q-pa-md">
-            <q-btn type="submit" :loading="disabling" icon="tv_off" color="primary" label="Disable this UI Forever" class="full-width" >
+            <q-btn type="submit" :loading="disabling" icon="tv_off" color="primary" label="Disable this UI forever" class="full-width" >
               <template v-slot:loading>
                 <q-spinner-facebook />
               </template>
             </q-btn>
 
         </form>
+
+        <form @submit.prevent="updtCredentials" class="q-pa-md">
+            <q-btn type="submit" :loading="updting" icon="update" color="primary" label="Apply credentials by rebooting now" class="full-width" >
+              <template v-slot:loading>
+                <q-spinner-facebook />
+              </template>
+            </q-btn>
+
+        </form>
+
       </div></div>
 
     </div>
@@ -93,7 +103,8 @@ export default {
   },
   data () {
     return {
-      disabling: false
+      disabling: false,
+      updting: false
     }
   },
   methods: {
@@ -113,6 +124,23 @@ export default {
 
       setTimeout(() => {
         this.disabling = false
+      }, 3000)
+    },
+    updtCredentials () {
+      this.updting = true
+
+      this.$axios.post('/updatecredentials', {
+        updatecredentials: true
+      })
+      .then(function (res) {
+        console.log(res);
+      })
+      .catch(function (err) {
+        console.log("Error on POST to /updatecredentials" + err);
+      });
+
+      setTimeout(() => {
+        this.updting = false
       }, 3000)
     }
   }
