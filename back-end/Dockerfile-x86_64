@@ -1,6 +1,11 @@
 # https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
 FROM node:10-slim
 
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    systemd \
+    systemd-sysv \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /usr/src/app
 COPY package*.json ./
 
