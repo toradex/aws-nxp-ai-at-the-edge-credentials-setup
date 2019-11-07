@@ -108,6 +108,22 @@ app.post('/disable', cors(), (req, res) => {
     }
 });
 
+app.options('/updatecredentials', cors())
+app.post('/updatecredentials', cors(), (req, res) => {
+    if (req.body.updatecredentials === true){
+        require('child_process').exec('reboot', function(err) {
+            if (err) {
+                return res.status(500).send(err);
+            }
+            res.send(true)
+        });
+    }
+    else {
+        console.log("Error: update credentials request not set to true: " + req.body.disable)
+        res.status(401).send(false);
+    }
+});
+
 app.options('/model', cors())
 app.get('/model', cors(), (req, res) => {
     fs.readFile('/setup_descripion', function read(err, data) {
