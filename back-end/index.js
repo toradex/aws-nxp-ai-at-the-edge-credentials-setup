@@ -95,12 +95,11 @@ app.post('/cert-priv-key', cors(), (req, res) => {
 app.options('/disable', cors())
 app.post('/disable', cors(), (req, res) => {
     if (req.body.disable === true){
-        fs.writeFile('/etc/greengrass/credentials-service.disable', 'disable', function (err) {
+        require('child_process').exec('systemctl disable greengrass-credentials', function(err) {
             if (err) {
-                res.status(500).send(false)
-                return console.log(err);
+                return res.status(500).send(err);
             }
-            console.log("Disabling the update service forever");
+            res.send(true)
         });
     }
     else {
