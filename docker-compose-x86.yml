@@ -16,6 +16,9 @@ services:
       - configsetup
     volumes:
       - type: bind
+        source: /run/systemd
+        target: /run/systemd
+      - type: bind
         source: /etc/greengrass/
         target: /etc/greengrass/
       - type: bind
