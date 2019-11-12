@@ -49,16 +49,21 @@ module.exports = function (ctx) {
         'QInput',
         'QUploader',
         'QSpinner',
-        'QSpinnerFacebook'
+        'QSpinnerFacebook',
+        'QDialog',
+        'QCard',
+        'QCardSection',
+        'QCardActions'
       ],
 
       directives: [
-        'Ripple'
+        'Ripple',
+        'ClosePopup'
       ],
 
       // Quasar plugins
       plugins: [
-        'Notify'
+        'Notify',
       ]
     },
 

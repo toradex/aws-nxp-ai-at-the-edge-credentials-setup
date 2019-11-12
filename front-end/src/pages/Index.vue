@@ -5,48 +5,91 @@
 
     <div class="row q-pa-md q-gutter-md">
 
-      <div class="q-gutter-sm row "><div>
+       <div class="q-gutter-sm row "><div>
 
-        <q-field label="Bundle File Upload">
+        <q-field label="Option A - Enter AWS Credentials">
         </q-field>
 
-        <q-uploader
-          field-name="tar"
-          with-credentials=true
-          auto-upload
-          url="/bundle-tar"
-          label="Upload <hash>.tar.gz  Bundle File"
-        ></q-uploader>
+        <q-card class="my-card">
+          <q-card-section>
+
+            <q-input v-model="keyid" label="Access key ID" />
+
+            <q-input style="margin-bottom: 20px" v-model="key" label="Secret access key" />
+
+            <q-btn @click="runBigBang()" type="button" icon="cloud_done" color="primary" label="Run Cloud Formation" class="full-width" >
+              <template v-slot:loading>
+                <q-spinner-facebook />
+              </template>
+            </q-btn>
+          </q-card-section>
+        </q-card>
+
+      </div></div>
+
+      <div class="q-gutter-sm row "><div>
+
+        <q-field label="Option B - Bundle File Upload">
+        </q-field>
+
+        <q-card class="my-card">
+          <q-card-section>
+              <q-uploader
+                style="margin-bottom: 10px"
+                field-name="tar"
+                with-credentials=true
+                auto-upload
+                url="/bundle-tar"
+                label="Upload <hash>.tar.gz  Bundle File"
+              ></q-uploader>
+
+              <q-uploader
+                field-name="tar"
+                with-credentials=true
+                auto-upload
+                url="/bundle-tar"
+                label="Upload <hash>.tar.gz  Bundle File"
+              ></q-uploader>
+          </q-card-section>
+        </q-card>
 
       </div></div>
       <div class="q-gutter-sm row"><div>
 
-        <q-field label="Single Files Upload">
+        <q-field label="Option C - Single Files Upload">
         </q-field>
 
-        <q-uploader
-          field-name="confjson"
-          with-credentials=true
-          auto-upload
-          url="/conf-json"
-          label="Upload config.json File"
-        ></q-uploader>
+         <q-card class="my-card">
+          <q-card-section>
+            
+            <q-uploader
+              style="margin-bottom: 10px"
+              field-name="confjson"
+              with-credentials=true
+              auto-upload
+              url="/conf-json"
+              label="Upload config.json File"
+            ></q-uploader>
 
-        <q-uploader
-          field-name="pem"
-          with-credentials=true
-          auto-upload
-          url="/cert-pem"
-          label="Upload <hash>.cert.pem File"
-        ></q-uploader>
+            <q-uploader
+              style="margin-bottom: 10px"
+              field-name="pem"
+              with-credentials=true
+              auto-upload
+              url="/cert-pem"
+              label="Upload <hash>.cert.pem File"
+            ></q-uploader>
 
-        <q-uploader
-          field-name="privkey"
-          with-credentials=true
-          auto-upload
-          url="/cert-priv-key"
-          label="Upload <hash>.private.key File"
-        ></q-uploader>
+            <q-uploader
+              field-name="privkey"
+              with-credentials=true
+              auto-upload
+              url="/cert-priv-key"
+              label="Upload <hash>.private.key File"
+            ></q-uploader>
+
+          </q-card-section>
+        </q-card>
 
       </div></div>
 
@@ -74,6 +117,52 @@
         </form>
 
       </div></div>
+
+    <q-dialog v-model="prompt" persistent>
+      <q-card style="min-width: 350px">
+        <q-card-section>
+          <div class="text-h6">{{loadText}}</div>
+        </q-card-section>
+
+        <q-card-section
+          :style="dispSpinner"
+          style="text-align: center;">
+          <q-spinner
+            color="primary"
+            size="3em"
+            :thickness="10"
+          />
+         </q-card-section>
+
+        <q-card-section
+          :style="dispError"
+          style="text-align: center; color: red; font-size: 120px;"
+        >
+          <q-icon
+            name="error_outline"
+          />
+        </q-card-section>
+
+        <q-card-section
+          :style="dispSuccess"
+          style="text-align: center; color: green; font-size: 120px;"
+        >
+          <q-icon
+            name="error_outline"
+          />
+        </q-card-section>
+
+         <q-card-section
+          style="text-align: center;"
+         >
+          <div class="text-h10">{{descText}}</div>
+         </q-card-section>
+
+        <q-card-actions align="right" class="text-primary">
+          <q-btn flat label="Ok" :disabled="canDisabled" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     </div>
 
@@ -103,8 +192,18 @@ export default {
   },
   data () {
     return {
+      loadText: "Loading",
+      descText: "Cloud Formation Success",
+      dispSpinner: "display: block",
+      dispError: "display: none",
+      dispSuccess: "display: none",
       disabling: false,
-      updting: false
+      updting: false,
+      prompt: false,
+      canDisabled: true,
+      address: '',
+      keyid: '',
+      key: ''
     }
   },
   methods: {
@@ -142,6 +241,53 @@ export default {
       setTimeout(() => {
         this.updting = false
       }, 3000)
+    },
+    runBigBang () {
+
+      this.prompt = true;
+      var me = this;
+      me.canDisabled = true
+      me.dispSuccess = "display: none;"
+      me.dispError = "display: none;"
+      me.dispSpinner = "display: block;"
+      me.descText = ""
+
+      console.info(me.key);
+      console.info(me.keyid);
+
+      if (me.keyid != "" && me.key != "") {
+        this.$axios.post('/bigbang', 
+        {
+          keyId: me.keyid,
+          key: me.key
+        })
+        .then(function (res) {
+          console.log("big bang call");
+          console.info(res);
+
+          me.canDisabled = false
+          me.dispSuccess = "display: block;"
+          me.dispError = "display: none;"
+          me.dispSpinner = "display: none;"
+          me.descText = ""
+        })
+        .catch(function (err) {
+          console.log("Error on POST to /bigbang " + err);
+          me.dispSpinner = "display: none;"
+          me.dispSuccess = "display: none;"
+          me.loadText = "Error"
+          me.descText = "Error trying to connect to endpoint"
+          me.dispError = "display: block;"
+          me.canDisabled = false
+        });
+      } else {
+        me.dispSpinner = "display: none;"
+        me.dispSuccess = "display: none;"
+        me.loadText = "Error"
+        me.descText = "Empty Fields"
+        me.dispError = "display: block;"
+        me.canDisabled = false
+      }
     }
   }
 
