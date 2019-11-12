@@ -4,9 +4,9 @@ services:
     build:
       context: ./front-end
       dockerfile: Dockerfile-arm32v7
-    image: leograba/pasta-demo-credentials-setup-front:latest-arm32v7
+    image: torizonextras/pasta-demo-credentials-setup-front:latest-arm32v7
   back-end:
     build:
       context: ./back-end
       dockerfile: Dockerfile-arm32v7
-    image: leograba/pasta-demo-credentials-setup-back:latest-arm32v7
+    image: torizonextras/pasta-demo-credentials-setup-back:latest-arm32v7

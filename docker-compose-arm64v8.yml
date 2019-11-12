@@ -1,7 +1,7 @@
 version: '3.7'
 services:
   front-end:
-    image: leograba/pasta-demo-credentials-setup-front:latest-arm64v8
+    image: torizonextras/pasta-demo-credentials-setup-front:latest-arm64v8
     depends_on:
       - back-end
     ports:
@@ -11,7 +11,7 @@ services:
     networks:
       - configsetup
   back-end:
-    image: leograba/pasta-demo-credentials-setup-back:latest-arm64v8
+    image: torizonextras/pasta-demo-credentials-setup-back:latest-arm64v8
     networks:
       - configsetup
     volumes:

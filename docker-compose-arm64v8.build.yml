@@ -4,9 +4,9 @@ services:
     build:
       context: ./front-end
       dockerfile: Dockerfile-arm64v8
-    image: leograba/pasta-demo-credentials-setup-front:latest-arm64v8
+    image: torizonextras/pasta-demo-credentials-setup-front:latest-arm64v8
   back-end:
     build:
       context: ./back-end
       dockerfile: Dockerfile-arm64v8
-    image: leograba/pasta-demo-credentials-setup-back:latest-arm64v8
+    image: torizonextras/pasta-demo-credentials-setup-back:latest-arm64v8

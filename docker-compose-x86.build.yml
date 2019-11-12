@@ -4,9 +4,9 @@ services:
     build:
       context: ./front-end
       dockerfile: Dockerfile-x86_64
-    image: leograba/pasta-demo-credentials-setup-front:latest-x86
+    image: torizonextras/pasta-demo-credentials-setup-front:latest-x86
   back-end:
     build:
       context: ./back-end
       dockerfile: Dockerfile-x86_64
-    image: leograba/pasta-demo-credentials-setup-back:latest-x86
+    image: torizonextras/pasta-demo-credentials-setup-back:latest-x86
