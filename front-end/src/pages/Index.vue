@@ -13,6 +13,8 @@
         <q-card class="my-card">
           <q-card-section>
 
+            <q-input v-model="ggName" label="IoT Core Group Name" />
+
             <q-input v-model="keyid" label="Access key ID" />
 
             <q-input style="margin-bottom: 20px" v-model="key" label="Secret access key" />
@@ -148,7 +150,7 @@
           style="text-align: center; color: green; font-size: 120px;"
         >
           <q-icon
-            name="error_outline"
+            name="insert_emoticon"
           />
         </q-card-section>
 
@@ -197,6 +199,7 @@ export default {
       dispSpinner: "display: block",
       dispError: "display: none",
       dispSuccess: "display: none",
+      ggName: "pasta_demo_cfn",
       disabling: false,
       updting: false,
       prompt: false,
@@ -251,6 +254,7 @@ export default {
       me.dispError = "display: none;"
       me.dispSpinner = "display: block;"
       me.descText = ""
+      me.loadText = "Running ..."
 
       console.info(me.key);
       console.info(me.keyid);
@@ -259,17 +263,28 @@ export default {
         this.$axios.post('/bigbang', 
         {
           keyId: me.keyid,
-          key: me.key
+          key: me.key,
+          ggName: me.ggName
         })
         .then(function (res) {
           console.log("big bang call");
           console.info(res);
 
-          me.canDisabled = false
-          me.dispSuccess = "display: block;"
-          me.dispError = "display: none;"
-          me.dispSpinner = "display: none;"
-          me.descText = ""
+          if (res.status == 200) {
+            me.canDisabled = false
+            me.dispSuccess = "display: block;"
+            me.dispError = "display: none;"
+            me.dispSpinner = "display: none;"
+            me.descText = ""
+            me.loadText = "Success"
+          } else {
+            me.canDisabled = false
+            me.dispSuccess = "display: none;"
+            me.dispError = "display: block;"
+            me.dispSpinner = "display: none;"
+            me.descText = "Error trying to run AWS CloudFormation"
+            me.loadText = "Error"
+          }
         })
         .catch(function (err) {
           console.log("Error on POST to /bigbang " + err);
