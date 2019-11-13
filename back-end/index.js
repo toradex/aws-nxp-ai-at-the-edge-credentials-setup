@@ -7,6 +7,7 @@ const cors = require('cors');
 const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
+const exec = require('child_process').exec;
 
 app.use(fileUpload());
 app.use( bodyParser.json() );
@@ -131,6 +132,39 @@ app.get('/model', cors(), (req, res) => {
             return console.log(err);
         }
         res.send(data);
+    });
+});
+
+app.options('/bigbang', cors())
+app.post('/bigbang', cors(), (req, res) => {
+    console.log(req.body.keyId);
+    console.log(req.body.key);
+    console.log(req.body.ggName);
+
+    //res.send(true);
+
+    fs.readFile('/etc/hostname', function read(err, data) {
+        if (err) {
+            return console.log(err);
+        }
+        
+        var cmd = '/aws-nxp-ai-at-the-edge/entrypoint.sh '
+                    + 'pastademo' + (data + '').replace("\n", "") + ' '
+                    + req.body.ggName + ' '
+                    + req.body.keyId + ' ' + req.body.key
+
+        console.log(cmd)
+        
+        var entry = exec(cmd,
+        (error, stdout, stderr) => {
+            console.log(stdout);
+            console.log(stderr);
+            if (error !== null) {
+                console.log(`exec error: ${error}`);
+                res.send(`exec error: ${error}`);
+            } else
+                res.send(true);
+        });
     });
 });
 
