@@ -112,7 +112,8 @@ app.post('/disable', cors(), (req, res) => {
 app.options('/updatecredentials', cors())
 app.post('/updatecredentials', cors(), (req, res) => {
     if (req.body.updatecredentials === true){
-        require('child_process').exec('reboot', function(err) {
+        console.log("Restarting Greengrass Software");
+        require('child_process').exec('systemctl restart greengrass-software', function(err) {
             if (err) {
                 return res.status(500).send(err);
             }
