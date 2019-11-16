@@ -180,15 +180,18 @@ app.post('/bigbang', cors(), (req, res) => {
 
         console.log(cmd)
         
+        // The command takes too long. Answer the server just to let it know
+        // the request went well.
+        res.send(true);
+
         var entry = exec(cmd,
         (error, stdout, stderr) => {
             console.log(stdout);
             console.log(stderr);
             if (error !== null) {
                 console.log(`exec error: ${error}`);
-                res.send(`exec error: ${error}`);
             } else
-                res.send(true);
+                console.log("Restarting Greengrass Software");
         });
     });
 });
