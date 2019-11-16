@@ -19,7 +19,7 @@
 
             <q-input style="margin-bottom: 20px" v-model="key" label="Secret access key" />
 
-            <q-btn @click="runBigBang()" type="button" icon="cloud_done" color="primary" label="Run Cloud Formation" class="full-width" >
+            <q-btn @click="runBigBang()" type="button" icon="cloud_done" color="primary" label="Run CloudFormation" class="full-width" >
               <template v-slot:loading>
                 <q-spinner-facebook />
               </template>
@@ -36,22 +36,15 @@
 
         <q-card class="my-card">
           <q-card-section>
-              <q-uploader
-                style="margin-bottom: 10px"
-                field-name="tar"
-                with-credentials=true
-                auto-upload
-                url="/bundle-tar"
-                label="Upload <hash>.tar.gz  Bundle File"
-              ></q-uploader>
+            <q-uploader
+              style="margin-bottom: 10px"
+              field-name="tar"
+              with-credentials=true
+              auto-upload
+              url="/bundle-tar"
+              label="Upload <hash>.tar.gz  Bundle File"
+            ></q-uploader>
 
-              <q-uploader
-                field-name="tar"
-                with-credentials=true
-                auto-upload
-                url="/bundle-tar"
-                label="Upload <hash>.tar.gz  Bundle File"
-              ></q-uploader>
           </q-card-section>
         </q-card>
 
