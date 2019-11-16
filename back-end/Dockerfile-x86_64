@@ -1,17 +1,45 @@
-# https://nodejs.org/de/docs/guides/nodejs-docker-webapp/
 FROM node:10-slim
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y \
     systemd \
     systemd-sysv \
+    zip \
+    tar \
+    python3 \
+    python3-pip \
+    git \
+    groff \
+    curl \
+    jshon \
+    yarn \
     && rm -rf /var/lib/apt/lists/*
 
-WORKDIR /usr/src/app
 COPY package*.json ./
 
 RUN npm install
 # If you are building your code for production
 # RUN npm ci --only=production
+
+# install aws cli and quasar cli
+WORKDIR /
+RUN pip3 install awscli --upgrade --user
+RUN npm install -g @quasar/cli --unsafe-perm
+
+# get the aws dashboard
+RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge-cloud-dashboard.git && \
+    cd /aws-nxp-ai-at-the-edge-cloud-dashboard && \
+    yarn installAll && \
+    echo "GIT2"
+
+# get the lambdas code from github
+RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge.git && \
+    echo "GIT1 "
+
+# test
+RUN export PATH=$PATH:/root/.local/bin && \
+    aws --version && \
+    cd /aws-nxp-ai-at-the-edge && \
+    git remote -v
 
 COPY . .
 
