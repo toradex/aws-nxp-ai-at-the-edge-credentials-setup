@@ -24,6 +24,15 @@
                 <q-spinner-facebook />
               </template>
             </q-btn>
+
+            <q-linear-progress stripe rounded style="height: 26px" class="q-mt-lg" :value="progress" >
+              <div class="absolute-full flex flex-center">
+                <q-badge color="white" text-color="blue" :label="progressLabel" ></q-badge>
+              </div>
+            </q-linear-progress>
+
+            <p v-show="weburls">Your web dashboard is available at:<br />{{weburls}}</p>
+
           </q-card-section>
         </q-card>
 
@@ -180,7 +189,9 @@ import {
   QToggle,
   QIcon,
   QField,
-  QTooltip
+  QTooltip,
+  QLinearProgress,
+  QBadge
 } from 'quasar'
 
 export default {
@@ -190,7 +201,9 @@ export default {
     QToggle,
     QIcon,
     QField,
-    QTooltip
+    QTooltip,
+    QLinearProgress,
+    QBadge
   },
   data () {
     return {
@@ -206,10 +219,49 @@ export default {
       canDisabled: true,
       address: '',
       keyid: '',
-      key: ''
+      key: '',
+      progress: 0.0,
+      weburls: ''
+    }
+  },
+  computed: {
+    progressLabel () {
+      return (this.progress * 100).toFixed(2) + '%'
     }
   },
   methods: {
+    updtProgressBar () {
+      var me = this;
+      setInterval(() => {
+        this.$axios.post('/progress', {
+          updatecredentials: true
+        })
+        .then(function (res) {
+          if (res.status == 200) {
+            me.progress = Number(res.data)/100;
+          }
+        })
+        .catch(function (err) {
+          console.log("Error on POST to /progress" + err);
+        });
+      }, 5000);
+    },
+    getWebURL () {
+      var me = this;
+      setInterval(() => {
+        this.$axios.post('/webdashboards', {
+          updatecredentials: true
+        })
+        .then(function (res) {
+          if (res.status == 200) {
+            me.weburls = res.data;
+          }
+        })
+        .catch(function (err) {
+          console.log("Error on POST to /webdashboards" + err);
+        });
+      }, 30000);
+    },
     disableForever () {
       this.disabling = true
 
@@ -266,7 +318,7 @@ export default {
           key: me.key,
           ggName: me.ggName
         })
-        .then(function (res) {
+        .then( (res) => {
           console.log("big bang call");
           console.info(res);
 
@@ -276,7 +328,7 @@ export default {
             me.dispError = "display: none;"
             me.dispSpinner = "display: none;"
             me.descText = ""
-            me.loadText = "Success"
+            me.loadText = "Deployment is running. It takes time, around 1 hour."
           } else {
             me.canDisabled = false
             me.dispSuccess = "display: none;"
@@ -304,6 +356,10 @@ export default {
         me.canDisabled = false
       }
     }
+  },
+  created () {
+    this.updtProgressBar();
+    this.getWebURL();
   }
 
 }
