@@ -190,8 +190,16 @@ app.post('/bigbang', cors(), (req, res) => {
             console.log(stderr);
             if (error !== null) {
                 console.log(`exec error: ${error}`);
-            } else
+            }
+            else {
+                console.log("Cloudformation command finished without returning errors");
                 console.log("Restarting Greengrass Software");
+                require('child_process').exec('systemctl restart greengrass-software', function(err) {
+                    if (err) {
+                        console.log("Unable to restart Greengrass Core service: " + err);
+                    }
+                });
+            }
         });
     });
 });
