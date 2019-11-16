@@ -136,6 +136,30 @@ app.get('/model', cors(), (req, res) => {
     });
 });
 
+app.options('/progress', cors())
+app.post('/progress', cors(), (req, res) => {
+    // get the deploy progress from a file
+    // Since some things are run in a bash script, makes it easier to share
+    // by file rather than a variable
+    fs.readFile("/progress.txt", function read(err, data){
+        if (err) {
+            return res.status(401).send(false);
+        }
+        res.send(data);
+    });
+});
+
+app.options('/webdashboards', cors())
+app.post('/webdashboards', cors(), (req, res) => {
+    // get the URL of web dashboard candidates
+    fs.readFile("/webdashboards.txt", "utf8", function read(err, data){
+        if (err) {
+            return res.status(401).send(false);
+        }
+        res.send(data);
+    });
+});
+
 app.options('/bigbang', cors())
 app.post('/bigbang', cors(), (req, res) => {
     console.log(req.body.keyId);
