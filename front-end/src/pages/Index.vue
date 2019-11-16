@@ -45,6 +45,14 @@
               label="Upload <hash>.tar.gz  Bundle File"
             ></q-uploader>
 
+            <form @submit.prevent="updtCredentials" class="q-pa-md">
+              <q-btn type="submit" :loading="updting" icon="update" color="primary" label="Apply credentials" class="full-width" >
+                <template v-slot:loading>
+                  <q-spinner-facebook />
+                </template>
+              </q-btn>
+            </form>
+
           </q-card-section>
         </q-card>
 
@@ -83,6 +91,14 @@
               label="Upload <hash>.private.key File"
             ></q-uploader>
 
+            <form @submit.prevent="updtCredentials" class="q-pa-md">
+              <q-btn type="submit" :loading="updting" icon="update" color="primary" label="Apply credentials" class="full-width" >
+                <template v-slot:loading>
+                  <q-spinner-facebook />
+                </template>
+              </q-btn>
+            </form>
+
           </q-card-section>
         </q-card>
 
@@ -95,15 +111,6 @@
 
         <form @submit.prevent="disableForever" class="q-pa-md">
             <q-btn type="submit" :loading="disabling" icon="tv_off" color="primary" label="Disable this UI forever" class="full-width" >
-              <template v-slot:loading>
-                <q-spinner-facebook />
-              </template>
-            </q-btn>
-
-        </form>
-
-        <form @submit.prevent="updtCredentials" class="q-pa-md">
-            <q-btn type="submit" :loading="updting" icon="update" color="primary" label="Apply credentials by rebooting now" class="full-width" >
               <template v-slot:loading>
                 <q-spinner-facebook />
               </template>
