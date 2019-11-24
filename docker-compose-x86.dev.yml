@@ -1,0 +1,52 @@
+# Run this only from the root dir of aws-nxp-ai-at-the-edge-credentials-setup
+# It uses $PWD for relative path config
+version: '3.7'
+services:
+  front-end:
+    image: torizonextras/pasta-demo-credentials-setup-front:latest-x86-dev
+    depends_on:
+      - back-end
+    ports:
+      - "8080:80"
+    links:
+      - back-end
+    networks:
+      - configsetup
+    volumes:
+      # Path to current project front-end directory
+      - type: bind                   
+        source: ${PWD}/front-end
+        target: /usr/src
+  back-end:
+    image: torizonextras/pasta-demo-credentials-setup-back:latest-x86
+    networks:
+      - configsetup
+    volumes:
+      # Path to current project back-end server (single-file Express.js server)
+      - type: bind                                  
+        source: ${PWD}/back-end/index.js
+        target: /index.js
+      - type: bind
+      # Path to project with the deployment scripts, shares same root dir
+        source: ${PWD}/../aws-nxp-ai-at-the-edge
+        target: /aws-nxp-ai-at-the-edge
+      - type: bind
+      # Path to dummy directory. We don't want accidentally reboot our machine
+        source: ${PWD}/back-end/test/run/systemd
+        target: /run/systemd
+      - type: bind
+        source: ${PWD}/back-end/test/greengrass/
+        target: /etc/greengrass/
+      - type: bind
+        source: ${PWD}/back-end/test/greengrass/config/
+        target: /greengrass/config/
+      - type: bind
+        source: ${PWD}/back-end/test/greengrass/certs/
+        target: /greengrass/certs/
+      - type: bind
+        source: ${PWD}/back-end/test/module_mock.txt
+        target: /setup_descripion
+        read_only: true
+    command: ["nodemon", "index.js"]
+networks:
+  configsetup:
