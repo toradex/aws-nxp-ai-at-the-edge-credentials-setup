@@ -226,11 +226,11 @@ app.post('/bigbang', cors(), (req, res) => {
                 console.log('child process exited with code ' + exit_code.toString());
             }
             exec('systemctl restart greengrass-software', function(err) {
-                    if (err) {
-                        console.log("Unable to restart Greengrass Core service: " + err);
-                    }
+                if (err) {
+                    console.log("Unable to restart Greengrass Core service: " + err);
+                }
                 console.log("Successfully finished");
-                });
+            });
         });
     });
 });
