@@ -194,7 +194,7 @@ app.post('/bigbang', cors(), (req, res) => {
             return console.log(err);
         }
         
-        var cmd = '/aws-nxp-ai-at-the-edge/entrypoint.sh'
+        var cmd = '/app/aws-nxp-ai-at-the-edge/entrypoint.sh'
         var args = [
             'pastademo' + (data + '').replace("\n", ""),
             req.body.ggName,

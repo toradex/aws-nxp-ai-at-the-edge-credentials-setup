@@ -1,5 +1,6 @@
 FROM node:10-slim
 
+WORKDIR /app
 RUN apt-get update && apt-get install -y \
     systemd \
     systemd-sysv \
@@ -21,27 +22,26 @@ RUN npm install
 # RUN npm ci --only=production
 
 # install aws cli and quasar cli
-WORKDIR /
 RUN pip3 install awscli --upgrade --user
 RUN npm install -g @quasar/cli nodemon --unsafe-perm
 
 # get the aws dashboard - checkout by hash to avoid cache
 RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge-cloud-dashboard.git && \
-    cd /aws-nxp-ai-at-the-edge-cloud-dashboard && git pull && \
+    cd /app/aws-nxp-ai-at-the-edge-cloud-dashboard && git pull && \
     git checkout daa11040f90d80de5f3ba526247abe95a113405f && \
     yarn installAll && \
     echo "GIT2"
 
 # get the lambdas code from github - checkout by hash to avoid cache
 RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge.git && \
-    cd /aws-nxp-ai-at-the-edge && git pull && \
+    cd /app/aws-nxp-ai-at-the-edge && git pull && \
     git checkout 057d4e1baf9861516b4ffb3666bf5492e527a67d && \
     echo "GIT1"
 
 # test
 RUN export PATH=$PATH:/root/.local/bin && \
     aws --version && \
-    cd /aws-nxp-ai-at-the-edge && \
+    cd /app/aws-nxp-ai-at-the-edge && \
     git remote -v
 
 COPY . .

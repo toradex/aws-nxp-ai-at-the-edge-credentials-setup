@@ -25,11 +25,11 @@ services:
       # Path to current project back-end server (single-file Express.js server)
       - type: bind                                  
         source: ${PWD}/back-end/index.js
-        target: /index.js
+        target: /app/index.js
       - type: bind
       # Path to project with the deployment scripts, shares same root dir
         source: ${PWD}/../aws-nxp-ai-at-the-edge
-        target: /aws-nxp-ai-at-the-edge
+        target: /app/aws-nxp-ai-at-the-edge
       - type: bind
       # Path to dummy directory. We don't want accidentally reboot our machine
         source: ${PWD}/back-end/test/run/systemd
