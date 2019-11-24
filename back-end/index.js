@@ -8,6 +8,11 @@ const bodyParser = require('body-parser');
 const fileUpload = require('express-fileupload');
 const fs = require('fs');
 const exec = require('child_process').exec;
+const spawn = require('child_process').spawn;
+
+// Variables to store stdout and sdterr for the AWS Cloudformation deployment
+var bblog = [];
+var bberr = [];
 
 app.use(fileUpload());
 app.use( bodyParser.json() );
@@ -173,33 +178,43 @@ app.post('/bigbang', cors(), (req, res) => {
             return console.log(err);
         }
         
-        var cmd = '/aws-nxp-ai-at-the-edge/entrypoint.sh '
-                    + 'pastademo' + (data + '').replace("\n", "") + ' '
-                    + req.body.ggName + ' '
-                    + req.body.keyId + ' ' + req.body.key
+        var cmd = '/aws-nxp-ai-at-the-edge/entrypoint.sh'
+        var args = [
+            'pastademo' + (data + '').replace("\n", ""),
+            req.body.ggName,
+            req.body.keyId + ' ' + req.body.key
+        ]
 
-        console.log(cmd)
+        console.log(cmd + args.toString())
         
         // The command takes too long. Answer the server just to let it know
         // the request went well.
         res.send(true);
 
-        var entry = exec(cmd,
-        (error, stdout, stderr) => {
-            console.log(stdout);
-            console.log(stderr);
-            if (error !== null) {
-                console.log(`exec error: ${error}`);
+        // spawn make it possible to pipe stdout and stderr
+        // And have real-time logging
+        var entry = spawn(cmd, args);
+
+        entry.stdout.on('data', (data) =>{
+            console.log(data.toString());
+            bblog.push(data.toString());
+        });
+
+        entry.stderr.on('data', (data) => {
+            console.log(data.toString());
+            bberr.push(data.toString());
+        });
+
+        entry.on("exit", (exit_code) =>{
+            if (exit_code) {
+                console.log('child process exited with code ' + exit_code.toString());
             }
-            else {
-                console.log("Cloudformation command finished without returning errors");
-                console.log("Restarting Greengrass Software");
-                require('child_process').exec('systemctl restart greengrass-software', function(err) {
+            exec('systemctl restart greengrass-software', function(err) {
                     if (err) {
                         console.log("Unable to restart Greengrass Core service: " + err);
                     }
+                console.log("Successfully finished");
                 });
-            }
         });
     });
 });
