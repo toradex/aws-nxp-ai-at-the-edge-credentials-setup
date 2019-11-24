@@ -50,6 +50,7 @@ module.exports = function (ctx) {
         'QItemLabel',
         'QInput',
         'QUploader',
+        'QScrollArea',
         'QSpinner',
         'QSpinnerFacebook',
         'QDialog',

@@ -1,8 +1,8 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex flex-center column">
     <!--<img alt="Quasar logo" src="~assets/quasar-logo-full.svg">-->
 
-    <div class="row q-pa-md q-gutter-md">
+    <div class="row q-pa-md q-gutter-md" style="width: 100%">
       <div class="q-gutter-sm row">
         <div>
           <q-field label="Option A - Enter AWS Credentials"></q-field>
@@ -189,6 +189,23 @@
         </q-card>
       </q-dialog>
     </div>
+
+    <div class="row q-pa-md q-gutter-md" style="width: 100%;">
+      <div class="q-gutter-sm row" style="width: 100%;">
+        <div style="width: 47%;">
+          <q-field label="Progress Log"></q-field>
+          <q-scroll-area ref="bblogposition" :visible="true" style="height: 200px;">
+            <span style="white-space: pre;">{{bigbanglog}}</span>
+          </q-scroll-area>
+        </div>
+        <div style="width: 47%;">
+          <q-field label="Error Log"></q-field>
+          <q-scroll-area ref="bberrposition" :visible="true" style="height: 200px;">
+            <span style="white-space: pre;">{{bigbangerr}}</span>
+          </q-scroll-area>
+        </div>
+      </div>
+    </div>
   </q-page>
 </template>
 
@@ -233,7 +250,9 @@ export default {
       keyid: "",
       key: "",
       progress: 0.0,
-      weburls: ""
+      weburls: "",
+      bigbanglog: "",
+      bigbangerr: ""
     };
   },
   computed: {
@@ -275,6 +294,26 @@ export default {
             console.log("Error on POST to /webdashboards" + err);
           });
       }, 30000);
+    },
+    getBigbangLog() {
+      var me = this;
+      setInterval(() => {
+        this.$axios
+          .post("/progresslog", {
+            updatecredentials: true
+          })
+          .then(function(res) {
+            if (res.status == 200) {
+              me.bigbanglog += res.data.log.toString();
+              me.bigbangerr += res.data.err.toString();
+              me.$refs.bblogposition.setScrollPosition(99999999, 1500);
+              me.$refs.bberrposition.setScrollPosition(99999999, 1500);
+            }
+          })
+          .catch(function(err) {
+            console.log("Error on POST to /progresslog" + err);
+          });
+      }, 5000);
     },
     disableForever() {
       this.disabling = true;
@@ -376,6 +415,7 @@ export default {
   created() {
     this.updtProgressBar();
     this.getWebURL();
+    this.getBigbangLog();
   }
 };
 </script>
