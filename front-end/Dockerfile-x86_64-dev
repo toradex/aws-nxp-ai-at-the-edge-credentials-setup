@@ -1,0 +1,16 @@
+FROM node as builder
+
+RUN npm install -g @quasar/cli
+
+WORKDIR /usr/src
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+# Build SPA app
+RUN quasar build -- -m spa -t mat
+
+EXPOSE 8080
+
+CMD [ "quasar", "dev", "-p", "80" ]

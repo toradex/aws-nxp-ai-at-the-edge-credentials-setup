@@ -23,7 +23,7 @@ RUN npm install
 # install aws cli and quasar cli
 WORKDIR /
 RUN pip3 install awscli --upgrade --user
-RUN npm install -g @quasar/cli --unsafe-perm
+RUN npm install -g @quasar/cli nodemon --unsafe-perm
 
 # get the aws dashboard
 RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge-cloud-dashboard.git && \
