@@ -1,8 +1,10 @@
 {
     "ignore": [
+        ".dockerenv",
         "node_modules",
         "Dockerfile*",
-        "aws-xnp-ai-at-the-edge*",
+        "aws-nxp-ai-at-the-edge/*",
+        "aws-nxp-ai-at-the-edge-cloud-dashboard/*",
         "bin",
         "boot",
         "dev",
@@ -13,14 +15,18 @@
         "media",
         "mnt",
         "opt",
+        "package*json",
         "proc",
+        "progress.txt",
         "root",
         "run",
         "sbin",
+        "setup_description",
         "srv",
         "sys",
         "tmp",
         "usr",
-        "var"
+        "var",
+        "webdashboards.txt"
     ]
 }
