@@ -165,6 +165,22 @@ app.post('/webdashboards', cors(), (req, res) => {
     });
 });
 
+app.options('/progresslog', cors())
+app.post('/progresslog', cors(), (req, res) => {
+    // log progress for user to follow-up
+    var msgformed = {
+        "log": "",
+        "err": ""
+    };
+    while(bblog.length){
+        msgformed.log += bblog.shift().toString() + "\n";
+    }
+    while(bberr.length){
+        msgformed.err += bberr.shift().toString() + "\n";
+    }
+    res.send(msgformed);
+});
+
 app.options('/bigbang', cors())
 app.post('/bigbang', cors(), (req, res) => {
     console.log(req.body.keyId);
