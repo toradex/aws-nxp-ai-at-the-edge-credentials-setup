@@ -13,4 +13,4 @@ RUN quasar build -- -m spa -t mat
 
 EXPOSE 8080
 
-CMD [ "quasar", "dev", "-p", "80" ]
+CMD [ "quasar", "dev" ]
