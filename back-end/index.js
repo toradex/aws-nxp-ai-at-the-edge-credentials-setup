@@ -27,12 +27,12 @@ app.post('/bundle-tar', cors(), (req, res) => {
             console.log("Unable to copy file!");
             return res.status(500).send(err);
         }
-        require('child_process').exec('tar -C /greengrass/ -zxf /greengrass/config/' + bundletar.name, function(err) {
+        exec('tar -C /greengrass/ -zxf /greengrass/config/' + bundletar.name, function(err) {
             if (err){
                 console.log("Unable to copy file!");
                 return res.status(500).send(err);
             }
-            require('child_process').exec('rm /greengrass/config/' + bundletar.name, function(err) {
+            exec('rm /greengrass/config/' + bundletar.name, function(err) {
                 if (err) {
                     return res.status(500).send(err);
                 }
@@ -96,7 +96,7 @@ app.post('/cert-priv-key', cors(), (req, res) => {
 app.options('/disable', cors())
 app.post('/disable', cors(), (req, res) => {
     if (req.body.disable === true){
-        require('child_process').exec('systemctl disable greengrass-credentials', function(err) {
+        exec('systemctl disable greengrass-credentials', function(err) {
             if (err) {
                 return res.status(500).send(err);
             }
@@ -113,7 +113,7 @@ app.options('/updatecredentials', cors())
 app.post('/updatecredentials', cors(), (req, res) => {
     if (req.body.updatecredentials === true){
         console.log("Restarting Greengrass Software");
-        require('child_process').exec('systemctl restart greengrass-software', function(err) {
+        exec('systemctl restart greengrass-software', function(err) {
             if (err) {
                 return res.status(500).send(err);
             }
