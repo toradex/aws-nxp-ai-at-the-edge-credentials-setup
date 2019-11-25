@@ -35,7 +35,7 @@ RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge-cloud-dashboard.
 # get the lambdas code from github - checkout by hash to avoid cache
 RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge.git && \
     cd /app/aws-nxp-ai-at-the-edge && git pull && \
-    git checkout 057d4e1baf9861516b4ffb3666bf5492e527a67d && \
+    git checkout bab5932f91a2195f80af7ec51d7f7a38af8ffa0d && \
     echo "GIT1"
 
 # test
