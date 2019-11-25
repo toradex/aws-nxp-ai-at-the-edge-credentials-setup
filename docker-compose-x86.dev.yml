@@ -26,12 +26,15 @@ services:
       - type: bind                                  
         source: ${PWD}/back-end/index.js
         target: /app/index.js
+      # Path to the deployment scripts
       - type: bind
-      # Path to project with the deployment scripts, shares same root dir
-        source: ${PWD}/../aws-nxp-ai-at-the-edge
-        target: /app/aws-nxp-ai-at-the-edge
+        source: ${PWD}/../aws-nxp-ai-at-the-edge/entrypoint.sh
+        target: /app/aws-nxp-ai-at-the-edge/entrypoint.sh
       - type: bind
+        source: ${PWD}/../aws-nxp-ai-at-the-edge/bigbang.sh
+        target: /app/aws-nxp-ai-at-the-edge/bigbang.sh
       # Path to dummy directory. We don't want accidentally reboot our machine
+      - type: bind
         source: ${PWD}/back-end/test/run/systemd
         target: /run/systemd
       - type: bind
