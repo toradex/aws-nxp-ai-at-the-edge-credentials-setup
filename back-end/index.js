@@ -198,10 +198,12 @@ app.post('/bigbang', cors(), (req, res) => {
         var args = [
             'pastademo' + (data + '').replace("\n", ""),
             req.body.ggName,
-            req.body.keyId + ' ' + req.body.key
+            req.body.keyId,
+            req.body.key
         ]
 
-        console.log(cmd + args.toString())
+        console.log("Invoking command: " + cmd)
+        console.log("\twith args: " + args.toString())
         
         // The command takes too long. Answer the server just to let it know
         // the request went well.
