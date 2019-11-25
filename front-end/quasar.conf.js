@@ -86,6 +86,29 @@ module.exports = function (ctx) {
     devServer: {
       // https: true,
       port: 8080,
+      open: true, // opens browser window automatically
+      proxy: [{
+        // proxy all requests to back-end server
+        context: [ //took from back-end/index.js
+          "/bundle-tar",
+          "/conf-json",
+          "/cert-pem",
+          "/cert-priv-key",
+          "/disable",
+          "/updatecredentials",
+          "/model",
+          "/progress",
+          "/webdashboards",
+          "/progresslog",
+          "/bigbang"
+        ],
+        target: 'http://back-end:8000',
+        changeOrigin: true
+        //'/progress': {
+        //  target: 'http://back-end:8000',
+        //  changeOrigin: true
+        //}
+      }]
     },
 
     // animations: 'all', // --- includes all animations
