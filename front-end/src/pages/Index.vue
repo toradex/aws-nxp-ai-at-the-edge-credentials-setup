@@ -193,13 +193,13 @@
     <div class="row q-pa-md q-gutter-md" style="width: 100%;">
       <div class="q-gutter-sm row" style="width: 100%;">
         <div style="width: 47%;">
-          <q-field label="Progress Log"></q-field>
+          <q-field label="Building Log"></q-field>
           <q-scroll-area ref="bblogposition" :visible="true" style="height: 200px;">
             <span style="white-space: pre;">{{bigbanglog}}</span>
           </q-scroll-area>
         </div>
         <div style="width: 47%;">
-          <q-field label="Error Log"></q-field>
+          <q-field label="Status Log"></q-field>
           <q-scroll-area ref="bberrposition" :visible="true" style="height: 200px;">
             <span style="white-space: pre;">{{bigbangerr}}</span>
           </q-scroll-area>
