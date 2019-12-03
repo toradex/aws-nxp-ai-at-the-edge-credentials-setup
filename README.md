@@ -1,6 +1,6 @@
 # aws-nxp-ai-at-the-edge-credentials-setup #
 
-User-friendly GUI to help setup AWS Greengrass Core device credentials to a
+User-friendly GUI to help setup AWS IoT Greengrass Core device credentials to a
 [Toradex](https://www.toradex.com/) Computer on Module using the embedded Linux
 [Torizon](https://www.toradex.com/operating-systems/torizon) platform.
 
