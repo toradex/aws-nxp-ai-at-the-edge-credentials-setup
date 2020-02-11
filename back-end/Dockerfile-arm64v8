@@ -28,9 +28,9 @@ RUN npm install -g @quasar/cli nodemon --unsafe-perm
 # get the aws dashboard - checkout by hash to avoid cache
 RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge-cloud-dashboard.git && \
     cd /app/aws-nxp-ai-at-the-edge-cloud-dashboard && git pull && \
-    git checkout 66d6bdb37edc21f989492d8f3e4e1ecaaf8e5078 && \
+    git checkout 0fe2ea06015f2bc58261c4b3e0ca644c340daddc && \
     yarn installAll && \
-    echo "GIT2"
+    echo "GIT3"
 
 # get the lambdas code from github - checkout by hash to avoid cache
 RUN git clone https://github.com/toradex/aws-nxp-ai-at-the-edge.git && \
