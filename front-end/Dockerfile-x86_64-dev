@@ -11,6 +11,6 @@ COPY . .
 # Build SPA app
 RUN quasar build -- -m spa -t mat
 
-EXPOSE 8080
+EXPOSE 8820
 
 CMD [ "quasar", "dev" ]

@@ -20,13 +20,13 @@ RUN quasar build -- -m spa -t mat
 
 #RUN npm install -g @quasar/cli
 
-#EXPOSE 8080
+#EXPOSE 8820
 
-#CMD [ "quasar", "serve", "-p", "8080" ]
+#CMD [ "quasar", "serve", "-p", "8820" ]
 
 FROM arm32v7/nginx:stable
 
-EXPOSE 8080
+EXPOSE 8820
 
 COPY --from=builder /usr/src/dist/spa/* /usr/share/nginx/html/
 COPY default.conf /etc/nginx/conf.d/default.conf

@@ -7,7 +7,7 @@ services:
     depends_on:
       - back-end
     ports:
-      - "8080:8080"
+      - "8820:8820"
     links:
       - back-end
     networks:
